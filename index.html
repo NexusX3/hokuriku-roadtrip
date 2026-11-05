@@ -3,16 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>北陸自駕三日</title>
-<meta name="description" content="大阪出發，金澤・雨晴海岸・富山・敦賀・三方五湖，三天兩夜不走回頭路的北陸環狀自駕行程。">
-<meta property="og:title" content="北陸自駕三日｜金澤・雨晴海岸・富山・敦賀">
-<meta property="og:description" content="大阪出發的三天兩夜環狀自駕路線，含每日時間表、停車與季節提醒。">
+<title>北陸鐵道三日</title>
+<meta name="description" content="大阪出發，搭雷鳥號與北陸新幹線，金澤・雨晴海岸・富山・敦賀三天兩夜大眾交通行程。">
+<meta property="og:title" content="北陸鐵道三日｜金澤・雨晴海岸・富山・敦賀">
+<meta property="og:description" content="大阪出發的三天兩夜北陸鐵道行程，含實際班次、轉乘與周遊券建議。">
 <style>
 :root{
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","PingFang TC","Helvetica Neue","Microsoft JhengHei",sans-serif;
   --paper:#f6f1e7; --card:#fffdf8; --ink:#1d2433; --muted:#5d6577; --line:#e3dacb;
   --indigo:#1f3a5f; --gold:#b8892b; --gold-soft:#f3e6c4; --sea:#2f6f86; --warn:#9a3b1f; --warn-soft:#f8e3d8;
   --shadow:0 1px 2px rgba(29,36,51,.06),0 8px 24px rgba(29,36,51,.06);
+}
+:root[lang="ja"]{
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Hiragino Sans","Hiragino Kaku Gothic ProN","Helvetica Neue","Meiryo",sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -33,6 +36,11 @@ a{color:var(--sea)}
 .wrap{max-width:820px;margin:0 auto;padding:0 16px}
 h1,h2,h3{font-family:var(--font);line-height:1.3;margin:0}
 
+/* language switch */
+.lang{position:fixed;top:12px;right:12px;z-index:20;display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:var(--shadow)}
+.lang button{font:600 13px/1 var(--font);color:var(--muted);background:transparent;border:0;border-radius:999px;padding:8px 12px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--indigo);color:var(--paper)}
+
 /* hero */
 header.hero{padding:56px 0 32px;border-bottom:1px solid var(--line)}
 .eyebrow{font-size:13px;letter-spacing:.2em;color:var(--gold);font-weight:700}
@@ -46,10 +54,11 @@ header.hero{padding:56px 0 32px;border-bottom:1px solid var(--line)}
 /* route map */
 .map{margin:28px 0 8px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow)}
 .map svg{width:100%;height:auto;display:block}
+.map svg text{font-family:var(--font)}
 .map figcaption{font-size:13px;color:var(--muted);padding:4px 6px 2px}
 
 /* nav */
-nav.days{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.days{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 nav.days .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px}
 nav.days a{flex:none;text-decoration:none;color:var(--ink);font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
 nav.days a:hover{border-color:var(--gold)}
@@ -57,10 +66,9 @@ nav.days a:hover{border-color:var(--gold)}
 section{padding:40px 0 8px;scroll-margin-top:56px}
 .sec-title{font-size:13px;letter-spacing:.2em;color:var(--gold);font-weight:700;margin-bottom:6px}
 
-
 /* day */
 .day-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-.day-no{font-family:var(--font);font-weight:900;font-size:44px;color:var(--gold);line-height:1}
+.day-no{font-weight:900;font-size:44px;color:var(--gold);line-height:1}
 .day-head h2{font-size:clamp(22px,5vw,28px);color:var(--indigo)}
 .drive{color:var(--muted);font-size:14px;margin:4px 0 18px}
 .stay{display:inline-block;background:var(--gold-soft);color:var(--ink);border-radius:6px;padding:2px 10px;font-size:14px;margin-left:4px}
@@ -70,16 +78,26 @@ section{padding:40px 0 8px;scroll-margin-top:56px}
 .tl li{position:relative;display:grid;grid-template-columns:52px 1fr;gap:20px;padding:0 0 18px}
 .tl time{font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--indigo);text-align:right;padding-top:14px}
 .tl li::after{content:"";position:absolute;left:53px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:3px solid var(--gold)}
-.tl li.move::after{border-color:var(--line);background:var(--line);width:8px;height:8px;left:55px;top:22px}
+.tl li.move::after{border-color:var(--sea);background:var(--sea);width:8px;height:8px;left:55px;top:22px}
 .stop{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow)}
+.tl li.move time{padding-top:10px}
 .tl li.move .stop{background:transparent;border:1px dashed var(--line);box-shadow:none;color:var(--muted);font-size:15px;padding:8px 14px}
+.tl li.move .stop strong{color:var(--ink)}
 .stop h3{font-size:18px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .stop p{margin:6px 0 0;font-size:15px}
-.tag{font-family:var(--font);font-size:12px;font-weight:500;padding:1px 8px;border-radius:999px;background:var(--gold-soft);color:var(--ink)}
+.tag{font-size:12px;font-weight:500;padding:1px 8px;border-radius:999px;background:var(--gold-soft);color:var(--ink)}
 .tag.opt{background:transparent;border:1px solid var(--line);color:var(--muted)}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;font-size:13px;color:var(--muted)}
 .meta a{text-decoration:none;font-weight:500}
+.daytip{margin-left:72px}
 .tip{margin-top:8px;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
+
+/* variant */
+.variant{margin:4px 0 0 72px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--sea);border-radius:12px;padding:12px 16px}
+.variant h3{font-size:17px;color:var(--sea);margin-bottom:6px}
+.variant ol{margin:0;padding-left:20px;font-size:15px}
+.variant ol li{margin:2px 0}
+.variant p{margin:8px 0 0;font-size:14px;color:var(--muted)}
 
 /* notes */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
@@ -87,8 +105,7 @@ section{padding:40px 0 8px;scroll-margin-top:56px}
 .note h3{font-size:16px;color:var(--indigo);margin-bottom:4px}
 .note p,.note ul{margin:0;font-size:15px;color:var(--ink)}
 .note ul{padding-left:18px}
-.note.warn{background:var(--warn-soft);border-color:transparent}
-.note.warn h3{color:var(--warn)}
+.note.key{background:var(--gold-soft);border-color:transparent}
 
 footer{padding:40px 0 56px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
 @media (max-width:480px){
@@ -97,207 +114,274 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:13px;border-top:1px soli
   .tl li::after{left:41px}
   .tl li.move::after{left:43px}
   .tl time{font-size:13px}
+  .variant,.daytip{margin-left:0}
 }
-@media print{nav.days{display:none}.stop,.note,.map{box-shadow:none}}
+@media print{nav.days,.lang{display:none}.stop,.note,.map{box-shadow:none}}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">HOKURIKU ROAD TRIP · 3D2N</div>
-    <h1>北陸自駕<span>三日</span></h1>
-    <p class="lede">大阪出發，金澤 → 雨晴海岸 → 富山 → 敦賀 → 三方五湖，繞一圈回大阪，全程不走回頭路。</p>
-    <div class="stats">
-      <span class="stat">總里程 約 <b>750 km</b></span>
-      <span class="stat">住宿 <b>金澤・富山</b> 各一晚</span>
-      <span class="stat">每日開車 <b>2–4 小時</b></span>
-    </div>
+<div class="lang" role="group" aria-label="Language">
+  <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+  <button type="button" data-lang="ja" aria-pressed="false">日本語</button>
+</div>
 
-    <figure class="map">
-      <svg viewBox="0 0 640 380" role="img" aria-label="路線示意圖：大阪北上金澤、雨晴海岸、富山，南下敦賀、三方五湖，再回大阪">
-        <defs>
-          <marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/>
-          </marker>
-        </defs>
-        <!-- sea -->
-        <path d="M0,0 H640 V60 C560,70 520,40 470,70 C440,90 410,60 370,95 C340,120 300,150 250,190 C210,220 170,225 120,235 C80,245 40,240 0,250 Z" fill="var(--sea)" opacity=".12"/>
-        <text x="40" y="60" font-size="14" fill="var(--sea)" opacity=".8" style="font-family:var(--font)">日本海</text>
-        <text x="520" y="40" font-size="12" fill="var(--sea)" opacity=".8">富山灣</text>
-        <!-- route -->
-        <path d="M150,330 C200,300 260,250 300,190" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
-        <path d="M310,170 C340,130 380,110 430,100" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
-        <path d="M445,98 C480,95 505,105 525,120" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
-        <path d="M530,135 C450,200 320,230 215,265" fill="none" stroke="var(--indigo)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar)"/>
-        <path d="M200,270 C180,270 160,262 140,262" fill="none" stroke="var(--indigo)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar)"/>
-        <path d="M125,270 C120,295 125,315 140,330" fill="none" stroke="var(--indigo)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar)"/>
-        <!-- points -->
-        <g style="font-family:var(--font)" font-size="18" fill="var(--ink)">
-          <circle cx="150" cy="340" r="8" fill="var(--indigo)"/><text x="166" y="352" font-weight="700">大阪</text>
-          <circle cx="305" cy="180" r="7" fill="var(--gold)"/><text x="240" y="170">金澤 🛏</text>
-          <circle cx="438" cy="96" r="7" fill="var(--gold)"/><text x="398" y="84">雨晴海岸</text>
-          <circle cx="532" cy="126" r="7" fill="var(--gold)"/><text x="520" y="160">富山 🛏</text>
-          <circle cx="208" cy="268" r="7" fill="var(--indigo)"/><text x="220" y="292">敦賀</text>
-          <circle cx="132" cy="262" r="7" fill="var(--indigo)"/><text x="48" y="258">三方五湖</text>
-        </g>
-        <g font-size="15" fill="var(--muted)" style="font-family:var(--font)">
-          <text x="400" y="350">━ 去程（Day 1–2）</text>
-          <text x="400" y="372">┅ 回程（Day 3）</text>
-        </g>
-      </svg>
-      <figcaption>路線示意圖（非實際比例）</figcaption>
-    </figure>
-  </div>
-</header>
+<div id="app"></div>
 
-<nav class="days" aria-label="行程導覽">
-  <div class="wrap">
-    <a href="#day1">Day 1 金澤</a>
-    <a href="#day2">Day 2 雨晴・富山</a>
-    <a href="#day3">Day 3 敦賀・三方五湖</a>
-    <a href="#notes">自駕須知</a>
-  </div>
-</nav>
+<script>
+const L = (o) => (o && typeof o === 'object' && 'zh' in o) ? o[lang] : o;
+const gmap = (q) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
 
-<main class="wrap">
+const UI = {
+  title: {zh:'北陸鐵道三日', ja:'北陸鉄道旅 三日間'},
+  desc: {zh:'大阪出發，搭雷鳥號與北陸新幹線，金澤・雨晴海岸・富山・敦賀三天兩夜大眾交通行程。',
+         ja:'大阪発、特急サンダーバードと北陸新幹線で巡る金沢・雨晴海岸・富山・敦賀の2泊3日モデルコース。'},
+  eyebrow: 'HOKURIKU BY RAIL · 3D2N',
+  h1: {zh:['北陸鐵道','三日'], ja:['北陸鉄道旅','三日間']},
+  lede: {zh:'大阪出發，搭雷鳥號＋北陸新幹線，金澤 → 雨晴海岸 → 富山 → 敦賀，再回大阪。全程大眾交通，不用開車。',
+         ja:'大阪から特急サンダーバード＋北陸新幹線で、金沢 → 雨晴海岸 → 富山 → 敦賀を巡って大阪へ。すべて公共交通機関で移動します。'},
+  stats: [
+    {zh:'交通 <b>雷鳥號＋北陸新幹線</b>', ja:'交通 <b>サンダーバード＋北陸新幹線</b>'},
+    {zh:'住宿 <b>金澤・富山</b> 各一晚', ja:'宿泊 <b>金沢・富山</b> 各1泊'},
+    {zh:'推薦 <b>JR 關西北陸周遊券</b>', ja:'おすすめ <b>関西北陸エリアパス</b>'}
+  ],
+  mapCap: {zh:'路線示意圖（非實際比例）', ja:'ルート概略図（縮尺は実際と異なります）'},
+  nav: {zh:['Day 1 金澤','Day 2 雨晴・富山','Day 3 敦賀','交通須知'], ja:['1日目 金沢','2日目 雨晴・富山','3日目 敦賀','交通ガイド']},
+  mapLink: {zh:'📍 地圖', ja:'📍 地図'},
+  notesEyebrow: {zh:'出發前', ja:'出発前に'},
+  notesTitle: {zh:'交通須知', ja:'交通ガイド'},
+  footer: {zh:'班次參考 2026 年 11 月查詢的 JR 西日本時刻表（2026 年 3 月 14 日改點版），JR 每年 3 月中會調整班次，出發前請再用 Google Maps 或「乗換案内」確認。營業時間與票價可能隨季節或特展異動。',
+           ja:'時刻は2026年11月時点のJR西日本時刻表（2026年3月14日改正）を参考にしています。JRは毎年3月にダイヤ改正があるため、出発前に乗換案内などで最新情報をご確認ください。営業時間・料金は季節や企画展により変わる場合があります。'}
+};
 
+const DAYS = [
+ { id:'day1', no:'01',
+   title:{zh:'大阪 → 金澤｜名園與茶屋街', ja:'大阪 → 金沢｜名園と茶屋街'},
+   route:{zh:'🚆 雷鳥號（大阪→敦賀）＋北陸新幹線（敦賀→金澤），約 2 小時 30 分', ja:'🚆 サンダーバード（大阪→敦賀）＋北陸新幹線（敦賀→金沢）、約2時間30分'},
+   stay:{zh:'住 金澤', ja:'金沢泊'},
+   items:[
+    {t:'08:10', move:true, p:{zh:'大阪站搭特急<strong>雷鳥號</strong>（サンダーバード）往敦賀，09:37 抵達。',
+                              ja:'大阪駅から特急<strong>サンダーバード</strong>で敦賀へ（09:37着）。'}},
+    {t:'09:46', move:true, p:{zh:'敦賀站轉乘北陸新幹線<strong>劍號</strong>（つるぎ），<strong>10:43</strong> 抵達金澤。轉乘只有 9 分鐘，下車後直接跟著「新幹線」指標走。',
+                              ja:'敦賀で北陸新幹線<strong>つるぎ</strong>に乗り換え、<strong>10:43</strong>金沢着。乗り換えは9分なので、降りたら「新幹線」の案内に沿ってすぐ移動。'}},
+    {t:'10:50', move:true, p:{zh:'先到金澤站附近的飯店寄放行李（或用車站置物櫃），之後輕裝玩市區。',
+                              ja:'金沢駅近くのホテルに荷物を預けて（またはコインロッカー）、身軽に街歩きへ。'}},
+    {t:'11:30', h:{zh:'近江町市場',ja:'近江町市場'}, tag:{zh:'午餐',ja:'昼食'},
+     p:{zh:'金澤的廚房，海鮮丼、烤牡蠣、甜蝦。從金澤站步行約 15 分鐘，或搭巴士到「武藏辻・近江町市場」約 5 分鐘。',
+        ja:'「金沢の台所」。海鮮丼、焼き牡蠣、甘えびを。金沢駅から徒歩約15分、またはバスで「武蔵ヶ辻・近江町市場」まで約5分。'},
+     meta:[{zh:'⏰ 店家多約 9:00–17:00',ja:'⏰ 多くの店は 9:00–17:00 頃'},{zh:'⚠️ 週三不少店公休',ja:'⚠️ 水曜定休の店が多め'}], q:'近江町市場'},
+    {t:'13:15', h:{zh:'兼六園＋金澤城公園',ja:'兼六園＋金沢城公園'}, tag:{zh:'必去',ja:'必見'},
+     p:{zh:'日本三名園之一。11 月起架設「雪吊」，配上霞池、徽軫燈籠最有味道。逛完從石川門走進對面的金澤城公園。從近江町市場步行約 20 分鐘，或搭巴士到「兼六園下・金澤城」。',
+        ja:'日本三名園のひとつ。11月からは冬の風物詩「雪吊り」が見られ、霞ヶ池や徽軫灯籠との景色は格別です。見学後は石川門から向かいの金沢城公園へ。近江町市場から徒歩約20分、またはバスで「兼六園下・金沢城」下車。'},
+     meta:[{zh:'⏰ 3/1–10/15 7:00–18:00；10/16–2月底 8:00–17:00',ja:'⏰ 3/1–10/15 7:00–18:00、10/16–2月末 8:00–17:00'},{zh:'💴 大人 320 円',ja:'💴 大人 320円'}], q:'兼六園'},
+    {t:'15:15', h:{zh:'東茶屋街',ja:'ひがし茶屋街'}, tag:{zh:'散步',ja:'散策'},
+     p:{zh:'江戶時代留存的茶屋建築群。金箔霜淇淋、懷華樓、志摩（重要文化財）。從兼六園步行約 20 分鐘，或搭巴士到「橋場町」。店家多在 17:00–18:00 收店，別拖太晚。',
+        ja:'江戸時代の茶屋建築が残る町並み。金箔ソフト、懐華樓、志摩（重要文化財）など。兼六園から徒歩約20分、またはバスで「橋場町」下車。17:00–18:00頃に閉まる店が多いので早めに。'},
+     meta:[], q:'ひがし茶屋街'},
+    {t:'18:00', h:{zh:'金澤站鼓門',ja:'金沢駅 鼓門'}, tag:{zh:'夜景',ja:'夜景'},
+     p:{zh:'搭巴士回金澤站約 10 分鐘。木造「鼓」造型＋玻璃「款待穹頂」，入夜打燈後最上相。順便在站內「金澤百番街」吃晚餐、買伴手禮。',
+        ja:'バスで金沢駅まで約10分。木造の「鼓門」とガラスの「もてなしドーム」は、ライトアップされる夜が一番の見どころ。駅ナカの「金沢百番街」で夕食とお土産を。'},
+     meta:[], q:'金沢駅 鼓門'}
+   ],
+   tip:{zh:'💡 市區移動推薦「城下町金澤周遊巴士」，各景點都有停；當天搭 3 趟以上就值得買巴士一日券。',
+        ja:'💡 市内は「城下まち金沢周遊バス」が便利。主要スポットを巡回します。1日3回以上乗るなら1日フリー乗車券がお得。'}
+ },
+ { id:'day2', no:'02',
+   title:{zh:'金澤 → 雨晴海岸 → 富山｜海上的雪山', ja:'金沢 → 雨晴海岸 → 富山｜海越しの立山連峰'},
+   route:{zh:'🚆 北陸新幹線＋城端線＋冰見線到雨晴，再經高岡到富山', ja:'🚆 北陸新幹線＋城端線＋氷見線で雨晴へ、高岡経由で富山へ'},
+   stay:{zh:'住 富山', ja:'富山泊'},
+   items:[
+    {t:'07:47', move:true, p:{zh:'金澤站搭北陸新幹線<strong>劍號</strong>，08:02 抵達新高岡（約 15 分鐘）。',
+                              ja:'金沢駅から北陸新幹線<strong>つるぎ</strong>で新高岡へ（08:02着、約15分）。'}},
+    {t:'08:13', move:true, p:{zh:'新高岡轉 <strong>JR 城端線</strong>，一站 3 分鐘到高岡（08:16 著）。',
+                              ja:'新高岡で<strong>JR城端線</strong>に乗り換え、1駅3分で高岡（08:16着）。'}},
+    {t:'08:43', move:true, p:{zh:'高岡轉 <strong>JR 冰見線</strong>，<strong>09:04</strong> 抵達雨晴站。冰見線約 30–60 分鐘一班，先記好回程班次。',
+                              ja:'高岡で<strong>JR氷見線</strong>に乗り換え、<strong>09:04</strong>雨晴着。氷見線は30〜60分に1本なので、帰りの時刻も確認しておきましょう。'}},
+    {t:'09:10', h:{zh:'雨晴海岸',ja:'雨晴海岸'}, tag:{zh:'絕景',ja:'絶景'},
+     p:{zh:'出站步行約 5 分鐘。隔著富山灣看海拔 3,000 公尺級的立山連峰，前景是義經岩、女岩。晴天的冬季早晨最容易看見，運氣好還有海面升起的「氣嵐」。看不到山也別灰心，海景本身就很美。',
+        ja:'駅から徒歩約5分。富山湾越しに3,000m級の立山連峰を望み、手前には義経岩と女岩。晴れた冬の朝が最も見えやすく、条件が良ければ海面から立ちのぼる「気嵐（けあらし）」も。山が見えなくても海の景色だけで十分きれいです。'},
+     meta:[{zh:'☕ 「道の駅 雨晴」有景觀咖啡可歇腳',ja:'☕ 「道の駅 雨晴」の展望カフェで休憩'}], q:'道の駅 雨晴',
+     tip:{zh:'💡 週日可改搭觀光列車「べるもんた」11:16 雨晴發，車上能吃富山灣壽司（需 3 天前預約）。',
+          ja:'💡 日曜日は観光列車「べるもんた」（雨晴11:16発）もおすすめ。車内で富山湾鮨が楽しめます（3日前までに要予約）。'}},
+    {t:'10:30', move:true, p:{zh:'雨晴站搭冰見線回高岡（10:52 著），轉<strong>愛之風富山鐵道</strong>往富山，約 20 分鐘。',
+                              ja:'雨晴から氷見線で高岡へ（10:52着）、<strong>あいの風とやま鉄道</strong>で富山まで約20分。'}},
+    {t:'11:30', h:{zh:'富山站 午餐',ja:'富山駅でランチ'}, tag:{zh:'午餐',ja:'昼食'},
+     p:{zh:'站內「白えび亭」的白蝦天丼是富山代表味，或吃一碗富山黑拉麵。先到飯店寄放行李再出發。',
+        ja:'駅ナカ「白えび亭」の白えび天丼は富山の定番。富山ブラックラーメンも。先にホテルへ荷物を預けてから出かけましょう。'},
+     meta:[], q:'白えび亭 富山駅'},
+    {t:'13:00', h:{zh:'富山市玻璃美術館',ja:'富山市ガラス美術館'}, tag:{zh:'必去',ja:'必見'},
+     p:{zh:'從富山站搭路面電車到「西町」站下車即到，約 10 分鐘。位於隈研吾設計的 TOYAMA キラリ，木與玻璃交錯的挑高中庭本身就是作品。6 樓「玻璃藝術花園」展示 Dale Chihuly 的大型裝置，常設展只要 200 円。',
+        ja:'富山駅から市内電車で「西町」下車すぐ（約10分）。隈研吾設計の「TOYAMAキラリ」内にあり、木とガラスが交差する吹き抜け自体が作品のよう。6階「グラス・アート・ガーデン」ではデイル・チフーリの大型インスタレーションを展示。常設展は200円。'},
+     meta:[{zh:'⏰ 9:30–18:00（週五、六至 20:00）',ja:'⏰ 9:30–18:00（金・土は20:00まで）'},{zh:'⚠️ 每月第 1、3 個週三休館',ja:'⚠️ 第1・第3水曜休館'}], q:'富山市ガラス美術館'},
+    {t:'16:30', h:{zh:'富岩運河環水公園',ja:'富岩運河環水公園'}, tag:{zh:'可選',ja:'寄り道'}, opt:true,
+     p:{zh:'搭路面電車回富山站，北口步行約 10 分鐘。號稱「世界最美的星巴克」就在這裡，天門橋傍晚打燈。晚餐推薦白蝦、富山灣壽司。',
+        ja:'市内電車で富山駅に戻り、北口から徒歩約10分。「世界一美しいスタバ」と呼ばれる店舗があり、夕方は天門橋がライトアップ。夕食は白えびや富山湾鮨を。'},
+     meta:[], q:'富岩運河環水公園'}
+   ]
+ },
+ { id:'day3', no:'03',
+   title:{zh:'富山 → 敦賀 → 大阪｜古社與海鮮市場', ja:'富山 → 敦賀 → 大阪｜古社と海鮮市場'},
+   route:{zh:'🚆 北陸新幹線直達敦賀（約 1 小時 10 分），雷鳥號回大阪（約 1 小時 20 分）', ja:'🚆 北陸新幹線で敦賀へ直通（約1時間10分）、サンダーバードで大阪へ（約1時間20分）'},
+   stay:null,
+   items:[
+    {t:'08:16', move:true, p:{zh:'富山站搭北陸新幹線<strong>劍號</strong>直達敦賀，<strong>09:25</strong> 抵達。',
+                              ja:'富山駅から北陸新幹線<strong>つるぎ</strong>で敦賀へ直通、<strong>09:25</strong>着。'}},
+    {t:'09:45', h:{zh:'氣比神宮',ja:'氣比神宮'}, tag:{zh:'參拜',ja:'参拝'},
+     p:{zh:'從敦賀站沿神樂通步行約 15 分鐘（行李可先放車站置物櫃）。北陸道總鎮守，朱紅大鳥居是日本三大木造鳥居之一（重要文化財）。境內有松尾芭蕉像與「長命水」。',
+        ja:'敦賀駅から神楽通りを歩いて約15分（荷物は駅のコインロッカーへ）。北陸道総鎮守で、朱色の大鳥居は日本三大木造鳥居のひとつ（重要文化財）。境内には松尾芭蕉像や「長命水」も。'},
+     meta:[{zh:'💴 免費參拜',ja:'💴 参拝無料'}], q:'氣比神宮'},
+    {t:'10:45', h:{zh:'日本海魚街',ja:'日本海さかな街'}, tag:{zh:'午餐＋伴手禮',ja:'昼食＋お土産'},
+     p:{zh:'從氣比神宮步行約 20 分鐘，或搭計程車約 5 分鐘。北陸最大級海鮮市場，約 60 家店。吃海鮮丼、烤魚，順手買乾貨、魚板當伴手禮。',
+        ja:'氣比神宮から徒歩約20分、タクシーなら約5分。北陸最大級の海鮮市場で、約60店舗が並びます。海鮮丼や焼き魚を味わい、干物やかまぼこをお土産に。'},
+     meta:[{zh:'⏰ 約 10:00–17:30（依店家）',ja:'⏰ 10:00–17:30頃（店舗により異なる）'},{zh:'⚠️ 不定休，出發前查一下',ja:'⚠️ 不定休のため事前に確認を'}], q:'日本海さかな街'},
+    {t:'12:45', move:true, p:{zh:'搭計程車（約 5 分鐘）或巴士回敦賀站，取回行李。',
+                              ja:'タクシー（約5分）またはバスで敦賀駅へ戻り、荷物を受け取る。'}},
+    {t:'13:14', move:true, p:{zh:'敦賀搭<strong>雷鳥號</strong>回大阪，<strong>14:36</strong> 抵達。想晚點走也有 14:14、15:14 等班次，大約每 30–60 分鐘一班。',
+                              ja:'敦賀から<strong>サンダーバード</strong>で大阪へ、<strong>14:36</strong>着。14:14発、15:14発など30〜60分おきに運行しているので、ゆっくりしたい場合は後の便でも。'}}
+   ],
+   variant:{
+     h:{zh:'加碼方案：去三方五湖彩虹線山頂公園',ja:'プラン追加：三方五湖レインボーライン山頂公園へ'},
+     steps:{zh:[
+       '參拜完氣比神宮後回敦賀站，搭 <strong>11:18</strong> JR 小濱線 → 11:40 美濱站',
+       '美濱站轉計程車約 15 分鐘，到山頂公園停車場，搭纜車或吊椅上山（含門票 1,000 円）',
+       '山頂俯瞰日本海與五座顏色不同的湖，有足湯可以泡腳，午餐在山頂解決',
+       '計程車回美濱站，<strong>15:12</strong> 小濱線 → 15:33 敦賀',
+       '<strong>15:44</strong> 雷鳥號 → <strong>17:06</strong> 大阪'
+     ], ja:[
+       '氣比神宮を参拝後、敦賀駅から <strong>11:18</strong>発 JR小浜線 → 11:40 美浜駅',
+       '美浜駅からタクシーで約15分、山頂公園の駐車場からケーブルカーまたはリフトで山頂へ（入園料1,000円込み）',
+       '日本海と色の異なる五つの湖を一望。足湯もあり、昼食は山頂で',
+       'タクシーで美浜駅へ戻り、<strong>15:12</strong>発 小浜線 → 15:33 敦賀',
+       '<strong>15:44</strong>発 サンダーバード → <strong>17:06</strong> 大阪'
+     ]},
+     note:{zh:'這個方案會跳過日本海魚街（時間不夠）。小濱線 1–2 小時才一班，計程車建議先預約。週六日與假日（至 12/6）另有周遊巴士「ゴコイチバス」從敦賀站、美濱站直達山頂公園。',
+           ja:'このプランでは日本海さかな街は省略になります。小浜線は1〜2時間に1本なので、タクシーは事前予約がおすすめ。土日祝（12/6まで）は敦賀駅・美浜駅から山頂公園へ行く周遊バス「ゴコイチバス」も運行。'}
+   }
+ }
+];
 
-<!-- DAY 1 -->
-<section id="day1">
-  <div class="day-head"><span class="day-no">01</span><h2>大阪 → 金澤｜名園與茶屋街</h2></div>
-  <p class="drive">🚗 名神高速 → 北陸自動車道，約 270 km、純車程 3 小時（含休息抓 3.5 小時）<span class="stay">住 金澤</span></p>
-  <ol class="tl">
-    <li class="move"><time>08:00</time><div class="stop">大阪出發。中途可在<strong>賤岳 SA</strong> 或<strong>北陸道 尼御前 SA</strong>（可眺望日本海）休息。</div></li>
-    <li><time>11:30</time><div class="stop">
-      <h3>近江町市場 <span class="tag">午餐</span></h3>
-      <p>金澤的廚房，海鮮丼、烤牡蠣、甜蝦。抵達後先把車停進飯店或市場周邊停車場，市區用走的或搭巴士最省事。</p>
-      <div class="meta"><span>⏰ 店家多約 9:00–17:00</span><span>⚠️ 週三不少店公休</span><a href="https://www.google.com/maps/search/?api=1&query=近江町市場" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li><time>13:30</time><div class="stop">
-      <h3>兼六園＋金澤城公園 <span class="tag">必去</span></h3>
-      <p>日本三名園之一。冬季有「雪吊」（11 月起架設），配上霞池、徽軫燈籠最有味道。逛完從石川門走進對面的金澤城公園。</p>
-      <div class="meta"><span>⏰ 3/1–10/15 7:00–18:00；10/16–2月底 8:00–17:00</span><span>💴 大人 320 円</span><a href="https://www.google.com/maps/search/?api=1&query=兼六園" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li><time>15:30</time><div class="stop">
-      <h3>東茶屋街 <span class="tag">散步</span></h3>
-      <p>江戶時代留存的茶屋建築群。金箔霜淇淋、懷華樓、志摩（重要文化財）。店家多在 17:00–18:00 收店，別拖太晚。</p>
-      <div class="meta"><a href="https://www.google.com/maps/search/?api=1&query=ひがし茶屋街" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li><time>18:30</time><div class="stop">
-      <h3>金澤站鼓門 <span class="tag">夜景</span></h3>
-      <p>木造「鼓」造型＋玻璃「款待穹頂」，入夜打燈後最上相。順便在站內「金澤百番街」吃晚餐、買伴手禮。</p>
-      <div class="meta"><a href="https://www.google.com/maps/search/?api=1&query=金沢駅+鼓門" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-  </ol>
-</section>
+const NOTES = [
+  {key:true, h:{zh:'🎫 JR 關西北陸周遊券',ja:'🎫 JR関西北陸エリアパス'},
+   p:{zh:'外國旅客限定，7 天 19,000 円，指定席免費劃位。涵蓋這趟所有 JR 列車（雷鳥號、北陸新幹線敦賀以東、城端線、冰見線），以及愛之風富山鐵道的高岡–富山（中途不能下車）。單買車票粗估超過 2 萬円，買周遊券比較划算。',
+      ja:'訪日外国人向け、7日間19,000円で指定席も無料。今回のJR列車（サンダーバード、北陸新幹線 敦賀以東、城端線、氷見線）と、あいの風とやま鉄道の高岡–富山（途中下車不可）をカバー。普通に切符を買うと2万円を超える見込みなので、パスがお得です。'}},
+  {h:{zh:'💺 先劃指定席',ja:'💺 指定席は早めに'},
+   p:{zh:'雷鳥號和新幹線週末、連假很滿。拿到周遊券就一次把 Day 1 和 Day 3 的位子劃好，敦賀轉乘才不會手忙腳亂。',
+      ja:'サンダーバードと新幹線は週末・連休に混み合います。パスを受け取ったら1日目と3日目の席をまとめて予約しておくと、敦賀での乗り換えも安心です。'}},
+  {h:{zh:'🧳 行李怎麼辦',ja:'🧳 荷物について'},
+   p:{zh:'兩晚都住車站步行範圍內的飯店，到了先寄放行李。Day 2、Day 3 中途下車時，用車站置物櫃（大型櫃位數有限，早點卡位）。',
+      ja:'2泊とも駅から歩けるホテルにして、到着後すぐ荷物を預けましょう。2日目・3日目の途中下車ではコインロッカーを利用（大型は数が少ないので早めに）。'}},
+  {h:{zh:'🚋 周遊券不含的交通',ja:'🚋 パス対象外の交通'},
+   ul:{zh:['金澤市區的北鐵巴士、周遊巴士','富山市內路面電車','敦賀市區巴士、計程車'],
+       ja:['金沢市内の北鉄バス・周遊バス','富山市内電車','敦賀市内のバス・タクシー']},
+   p2:{zh:'這些用 Suica／ICOCA 等 IC 卡最方便。',ja:'Suica・ICOCAなどの交通系ICカードが便利です。'}},
+  {h:{zh:'📅 留意休館日',ja:'📅 休館日に注意'},
+   ul:{zh:['富山玻璃美術館：第 1、3 個週三','近江町市場：週三不少店公休','日本海魚街：不定休'],
+       ja:['富山市ガラス美術館：第1・第3水曜','近江町市場：水曜定休の店が多め','日本海さかな街：不定休']}},
+  {h:{zh:'⛰️ 看立山的條件',ja:'⛰️ 立山連峰が見える条件'},
+   p:{zh:'晴朗、乾燥、空氣冷的早晨最好，11 月到隔年 2 月機率較高；夏天多半霧濛濛。前一晚先看天氣預報。',
+      ja:'晴れて空気が乾いた寒い朝がベスト。11月〜2月は見える確率が高く、夏は霞みがちです。前日に天気予報をチェック。'}}
+];
 
-<!-- DAY 2 -->
-<section id="day2">
-  <div class="day-head"><span class="day-no">02</span><h2>金澤 → 雨晴海岸 → 富山｜海上的雪山</h2></div>
-  <p class="drive">🚗 全天約 110 km，分段開，每段 20–60 分鐘<span class="stay">住 富山</span></p>
-  <ol class="tl">
-    <li class="move"><time>07:30</time><div class="stop">金澤出發，往冰見方向約 1 小時（能越自動車道／國道 160 號）。</div></li>
-    <li><time>08:30</time><div class="stop">
-      <h3>雨晴海岸 <span class="tag">絕景</span></h3>
-      <p>隔著富山灣看海拔 3,000 公尺級的立山連峰，前景是義經岩、女岩。晴天的冬季早晨最容易看見，運氣好還有海面升起的「氣嵐」。看不到山也別灰心，海景本身就很美。</p>
-      <div class="meta"><span>🅿️ 「道の駅 雨晴」可停車、有景觀咖啡</span><a href="https://www.google.com/maps/search/?api=1&query=道の駅+雨晴" target="_blank" rel="noopener">📍 地圖</a></div>
-      <div class="tip">💡 前一晚先看天氣預報；雲多的話可以把 Day 2 行程對調，下午再來碰運氣。</div>
-    </div></li>
-    <li><time>10:30</time><div class="stop">
-      <h3>新湊大橋・海王丸公園 <span class="tag">順路</span></h3>
-      <p>白色帆船「海王丸」停泊在港內，旁邊就是日本海側最大級的斜張橋新湊大橋。</p>
-      <div class="meta"><a href="https://www.google.com/maps/search/?api=1&query=海王丸パーク" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li><time>12:00</time><div class="stop">
-      <h3>新湊きっときと市場 <span class="tag">午餐</span></h3>
-      <p>漁港直營市場，富山灣白蝦、紅松葉蟹（冬季），海鮮丼價格實在。</p>
-      <div class="meta"><a href="https://www.google.com/maps/search/?api=1&query=新湊きっときと市場" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li class="move"><time>13:30</time><div class="stop">往富山市區約 30 分鐘，先 check-in 飯店放車。</div></li>
-    <li><time>14:30</time><div class="stop">
-      <h3>富山市玻璃美術館 <span class="tag">必去</span></h3>
-      <p>位於隈研吾設計的 TOYAMA キラリ，木與玻璃交錯的挑高中庭本身就是作品。6 樓「玻璃藝術花園」展示 Dale Chihuly 的大型裝置，常設展只要 200 円。</p>
-      <div class="meta"><span>⏰ 9:30–18:00（週五、六至 20:00）</span><span>⚠️ 每月第 1、3 個週三休館</span><a href="https://www.google.com/maps/search/?api=1&query=富山市ガラス美術館" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li><time>17:00</time><div class="stop">
-      <h3>富岩運河環水公園 <span class="tag opt">可選</span></h3>
-      <p>號稱「世界最美的星巴克」就在這裡，天泉橋傍晚打燈。晚餐推薦白蝦天丼、富山黑拉麵。</p>
-      <div class="meta"><a href="https://www.google.com/maps/search/?api=1&query=富岩運河環水公園" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-  </ol>
-</section>
+function mapSVG(){
+  const t = {
+    sea:{zh:'日本海',ja:'日本海'}, bay:{zh:'富山灣',ja:'富山湾'},
+    osaka:{zh:'大阪',ja:'大阪'}, tsuruga:{zh:'敦賀',ja:'敦賀'}, kanazawa:{zh:'金澤 🛏',ja:'金沢 🛏'},
+    ama:{zh:'雨晴海岸',ja:'雨晴海岸'}, toyama:{zh:'富山 🛏',ja:'富山 🛏'}, mikata:{zh:'三方五湖（加碼）',ja:'三方五湖（追加）'},
+    go:{zh:'━ Day 1–2',ja:'━ 1–2日目'}, back:{zh:'┅ Day 3',ja:'┅ 3日目'}
+  };
+  return `<svg viewBox="0 0 640 380" role="img" aria-label="${L(UI.mapCap)}">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/></marker>
+  <marker id="ar2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--indigo)"/></marker></defs>
+  <path d="M0,0 H640 V60 C560,70 520,40 470,70 C440,90 410,60 370,95 C340,120 300,150 250,190 C210,220 170,225 120,235 C80,245 40,240 0,250 Z" fill="var(--sea)" opacity=".12"/>
+  <text x="40" y="60" font-size="16" fill="var(--sea)">${L(t.sea)}</text>
+  <text x="510" y="40" font-size="14" fill="var(--sea)">${L(t.bay)}</text>
+  <path d="M150,330 C170,310 185,290 200,275" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
+  <path d="M215,262 C245,235 275,210 298,188" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
+  <path d="M312,170 C340,130 380,110 428,100" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
+  <path d="M446,98 C480,95 505,105 524,120" fill="none" stroke="var(--gold)" stroke-width="3" marker-end="url(#ar)"/>
+  <path d="M528,136 C450,200 320,235 222,265" fill="none" stroke="var(--indigo)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar2)"/>
+  <path d="M200,282 C190,300 172,318 158,328" fill="none" stroke="var(--indigo)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#ar2)"/>
+  <path d="M200,268 C175,264 152,262 135,262" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="2 5"/>
+  <g font-size="18" fill="var(--ink)">
+    <circle cx="150" cy="340" r="8" fill="var(--indigo)"/><text x="166" y="352" font-weight="700">${L(t.osaka)}</text>
+    <circle cx="208" cy="270" r="7" fill="var(--indigo)"/><text x="222" y="296">${L(t.tsuruga)}</text>
+    <circle cx="305" cy="180" r="7" fill="var(--gold)"/><text x="228" y="170">${L(t.kanazawa)}</text>
+    <circle cx="438" cy="96" r="7" fill="var(--gold)"/><text x="398" y="84">${L(t.ama)}</text>
+    <circle cx="532" cy="126" r="7" fill="var(--gold)"/><text x="512" y="160">${L(t.toyama)}</text>
+    <circle cx="128" cy="262" r="6" fill="none" stroke="var(--muted)" stroke-width="2"/><text x="20" y="290" font-size="15" fill="var(--muted)">${L(t.mikata)}</text>
+  </g>
+  <g font-size="15" fill="var(--muted)"><text x="420" y="350">${L(t.go)}</text><text x="420" y="372">${L(t.back)}</text></g>
+  </svg>`;
+}
 
-<!-- DAY 3 -->
-<section id="day3">
-  <div class="day-head"><span class="day-no">03</span><h2>富山 → 敦賀 → 三方五湖 → 大阪｜古社與五色湖</h2></div>
-  <p class="drive">🚗 北陸道南下約 210 km 到敦賀（約 2 小時 15 分），最後經舞鶴若狹道回大阪（約 2 小時）</p>
-  <ol class="tl">
-    <li class="move"><time>08:00</time><div class="stop">富山出發，北陸自動車道一路南下。中途可在<strong>南條 SA</strong> 休息。</div></li>
-    <li><time>10:30</time><div class="stop">
-      <h3>氣比神宮 <span class="tag">參拜</span></h3>
-      <p>北陸道總鎮守，朱紅大鳥居是日本三大木造鳥居之一（重要文化財）。境內有松尾芭蕉像與「長命水」，祈求旅途平安正好。</p>
-      <div class="meta"><span>💴 免費參拜</span><a href="https://www.google.com/maps/search/?api=1&query=氣比神宮" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li><time>11:30</time><div class="stop">
-      <h3>日本海魚街 <span class="tag">午餐＋伴手禮</span></h3>
-      <p>北陸最大級海鮮市場，約 60 家店。吃海鮮丼、烤魚，順手買乾貨、魚板當伴手禮。</p>
-      <div class="meta"><span>⏰ 約 10:00–17:30（依店家）</span><span>⚠️ 不定休，出發前查一下</span><a href="https://www.google.com/maps/search/?api=1&query=日本海さかな街" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li class="move"><time>13:00</time><div class="stop">往西約 40 分鐘，開上三方五湖彩虹線。</div></li>
-    <li><time>13:45</time><div class="stop">
-      <h3>彩虹線山頂公園 <span class="tag">絕景</span></h3>
-      <p>從停車場搭纜車或吊椅上山，360 度俯瞰日本海與顏色各異的五座湖。山頂有足湯，邊泡腳邊看海。</p>
-      <div class="meta"><span>⏰ 3–11 月 9:00–17:00；12–2 月 9:00–16:30</span><span>💴 1,000 円（含纜車／吊椅來回）</span><a href="https://www.google.com/maps/search/?api=1&query=レインボーライン山頂公園" target="_blank" rel="noopener">📍 地圖</a></div>
-    </div></li>
-    <li class="move"><time>15:30</time><div class="stop">若狹三方 IC → 舞鶴若狹道 → 中國道／名神回大阪，約 2 小時，<strong>17:30 前後</strong>抵達。</div></li>
-  </ol>
-</section>
+function stopHTML(it){
+  if (it.move) return `<li class="move"><time>${it.t}</time><div class="stop">🚆 ${L(it.p)}</div></li>`;
+  const meta = (it.meta||[]).map(m=>`<span>${L(m)}</span>`).join('');
+  return `<li><time>${it.t}</time><div class="stop">
+    <h3>${L(it.h)} <span class="tag${it.opt?' opt':''}">${L(it.tag)}</span></h3>
+    <p>${L(it.p)}</p>
+    <div class="meta">${meta}<a href="${gmap(it.q)}" target="_blank" rel="noopener">${L(UI.mapLink)}</a></div>
+    ${it.tip?`<div class="tip">${L(it.tip)}</div>`:''}
+  </div></li>`;
+}
 
-<!-- NOTES -->
-<section id="notes">
-  <div class="sec-title">出發前</div>
-  <h2>自駕須知</h2>
-  <div class="grid">
-    <div class="note warn">
-      <h3>❄️ 12 月–3 月務必雪胎</h3>
-      <p>北陸是豪雪地帶，冬天租車一定要指定冬季輪胎（Studless），並預留塞車與減速的時間。積雪路段開慢、拉長車距。</p>
-    </div>
-    <div class="note">
-      <h3>💳 ETC 卡＋高速周遊券</h3>
-      <p>租車時加租 ETC 卡。持外國護照可詢問租車公司 NEXCO 中日本的外國旅客周遊券（CEP），這條路線大多涵蓋在內，通常比單趟付費划算。</p>
-    </div>
-    <div class="note">
-      <h3>🅿️ 停車策略</h3>
-      <p>金澤、富山市區停車費不便宜且路窄，建議選附停車場的飯店，到了就停好，市區步行＋巴士。</p>
-    </div>
-    <div class="note">
-      <h3>📅 留意休館日</h3>
-      <ul>
-        <li>富山玻璃美術館：第 1、3 個週三</li>
-        <li>近江町市場：週三不少店公休</li>
-        <li>山頂公園：12/31–1/2、2 月第一週平日</li>
-      </ul>
-    </div>
-    <div class="note">
-      <h3>⛰️ 看立山的條件</h3>
-      <p>晴朗、乾燥、空氣冷的早晨最好，11 月到隔年 2 月機率較高；夏天多半霧濛濛。</p>
-    </div>
-    <div class="note">
-      <h3>🔁 彈性調整</h3>
-      <p>Day 3 時間不夠時，彩虹線可以先砍；改走敦賀 IC → 北陸道 → 名神回大阪，同樣約 2 小時。</p>
-    </div>
-  </div>
-</section>
+function dayHTML(d){
+  const v = d.variant ? `<div class="variant"><h3>✨ ${L(d.variant.h)}</h3><ol>${L(d.variant.steps).map(s=>`<li>${s}</li>`).join('')}</ol><p>${L(d.variant.note)}</p></div>` : '';
+  return `<section id="${d.id}">
+    <div class="day-head"><span class="day-no">${d.no}</span><h2>${L(d.title)}</h2></div>
+    <p class="drive">${L(d.route)}${d.stay?`<span class="stay">${L(d.stay)}</span>`:''}</p>
+    <ol class="tl">${d.items.map(stopHTML).join('')}</ol>
+    ${d.tip?`<div class="tip daytip">${L(d.tip)}</div>`:''}
+    ${v}
+  </section>`;
+}
 
-</main>
+function noteHTML(n){
+  return `<div class="note${n.key?' key':''}"><h3>${L(n.h)}</h3>
+    ${n.p?`<p>${L(n.p)}</p>`:''}
+    ${n.ul?`<ul>${L(n.ul).map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+    ${n.p2?`<p style="margin-top:6px">${L(n.p2)}</p>`:''}</div>`;
+}
 
-<footer>
-  <div class="wrap">
-    營業時間與票價以 2026 年 11 月查詢的資料為準，可能隨季節或特展異動，出發前請再到官網確認。<br>
-    時間表為建議節奏，可依實際狀況前後調整。
-  </div>
-</footer>
+function render(){
+  document.documentElement.lang = lang==='ja' ? 'ja' : 'zh-Hant-TW';
+  document.title = L(UI.title);
+  document.querySelector('meta[name=description]').content = L(UI.desc);
+  const h1 = L(UI.h1);
+  const nav = L(UI.nav);
+  document.getElementById('app').innerHTML = `
+  <header class="hero"><div class="wrap">
+    <div class="eyebrow">${UI.eyebrow}</div>
+    <h1>${h1[0]}<span>${h1[1]}</span></h1>
+    <p class="lede">${L(UI.lede)}</p>
+    <div class="stats">${UI.stats.map(s=>`<span class="stat">${L(s)}</span>`).join('')}</div>
+    <figure class="map">${mapSVG()}<figcaption>${L(UI.mapCap)}</figcaption></figure>
+  </div></header>
+  <nav class="days" aria-label="Itinerary"><div class="wrap">
+    <a href="#day1">${nav[0]}</a><a href="#day2">${nav[1]}</a><a href="#day3">${nav[2]}</a><a href="#notes">${nav[3]}</a>
+  </div></nav>
+  <main class="wrap">
+    ${DAYS.map(dayHTML).join('')}
+    <section id="notes"><div class="sec-title">${L(UI.notesEyebrow)}</div><h2>${L(UI.notesTitle)}</h2>
+      <div class="grid">${NOTES.map(noteHTML).join('')}</div></section>
+  </main>
+  <footer><div class="wrap">${L(UI.footer)}</div></footer>`;
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lang===lang));
+}
 
+let lang = 'zh';
+try {
+  const q = new URLSearchParams(location.search).get('lang');
+  const saved = localStorage.getItem('lang');
+  lang = (q==='ja'||q==='zh') ? q : (saved==='ja'?'ja':'zh');
+} catch(e){}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{
+  lang = b.dataset.lang;
+  try { localStorage.setItem('lang', lang); } catch(e){}
+  try { const u = new URL(location.href); u.searchParams.set('lang', lang); history.replaceState(null,'',u); } catch(e){}
+  render();
+}));
+render();
+</script>
 </body>
 </html>
